@@ -17,6 +17,9 @@ const header = "h"
 
 let wood = 0
 let rock = 0
+let canclick = true
+
+updatetext()
 
 setLegend(
   [ player, bitmap`
@@ -127,6 +130,9 @@ DDDDDDDDDDDDDDDD`],
 const treehit = tune`
 500: D5~500,
 15500`
+const move = tune`
+265.4867256637168: F4/265.4867256637168,
+8230.08849557522`
 
 setBackground(grass)
 
@@ -149,47 +155,53 @@ setPushables({
 
 onInput("w", () => {
   getFirst(player).y -= 1
-  
+  playTune(move)
 })
+
+onInput("a", () => {
+  getFirst(player).x -= 1
+  playTune(move)
+})
+
 
 onInput("s", () => {
   getFirst(player).y += 1
+  playTune(move)
 })
 
 onInput("d", () => {
   getFirst(player).x += 1
+  playTune(move)
 })
 afterInput(() => {
   
 })
 
-onInput("a", () => {
-  getFirst(player).x -= 1
-})
+
 afterInput(() => {
   
 })
 
 onInput("l", () => {
- // let P = getFirst(player);
-  //let TREE = getFirst(tree);
- // if (P.x == TREE.x && P.y ==TREE.y)
-  //if (tilesWith(player, tree))
-  wood += 1
-  rock += 1
-  playTune(treehit)
-  clearText()
+  let P = getFirst(player);
+  let TREE = getFirst(tree);
+  
+  if (P.x == TREE.x && P.y ==TREE.y)
+    wood += 1
+    playTune(treehit)
+    updatetext()
+})
+
+function updatetext()
+{
   addText("wood: " + wood, {
     x:0,
     y:0,
     color: color`2`
   })
-})
-
-
-
-addText("stone: " + rock, {
-    x:0,
-    y:2,
+  addText("stone: " + rock, {
+     x:0,
+     y:2,
     color: color`2`
   })
+}
