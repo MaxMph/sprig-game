@@ -23,7 +23,6 @@ let rockbuffer = 400
 let people = 0
 let canclick = true
 
-updatetext()
 
 setLegend(
   [ player, bitmap`
@@ -149,26 +148,46 @@ DDDDDDDDDDDDDDDD`],
 
 //sound effects
 const treehit = tune`
+375: E5^375,
+11625`
+const rockhit = tune`
 500: D5~500,
 15500`
 const move = tune`
 265.4867256637168: F4/265.4867256637168,
 8230.08849557522`
 
-setBackground(grass)
+
 
 setSolids([player, header])
 
-let level = 0
+let level = 2
 const levels = [
   map`
 hhhhh
 ..p..
 .....
-t.v.s`
+t.v.s`,
+  map`
+........
+....b...
+.bbbb...
+........
+........
+........
+........`,
+  map`
+.......
+.......
+.......
+.......
+.......
+...p...`
+  
 ]
 
 setMap(levels[level])
+updatetext()
 
 setPushables({
   [ player ]: []
@@ -205,16 +224,26 @@ onInput("l", () => {
   let P = getFirst(player);
   let TREE = getFirst(tree);
   let ROCK = getFirst(stone);
+  let HOME = getFirst(village)
   if (canclick == true){
-    if (P.x == ROCK.x && P.y == ROCK.y){
+    if (P.x === ROCK.x && P.y === ROCK.y){
       rock += 1
-      playTune(treehit)
+      playTune(rockhit)
       updatetext()
       canclick = false
       setTimeout(clickbuffer, rockbuffer)
     }
-    if (P.x == TREE.x && P.y == TREE.y){
+    if (P.x === TREE.x && P.y === TREE.y){
       wood += 1
+      playTune(treehit)
+      updatetext()
+      canclick = false
+      setTimeout(clickbuffer, woodbuffer)
+    }
+    if (P.x === HOME.x && P.y === HOME.y && wood > 0 && rock > 0){
+      people += 1
+      wood -= 1
+      rock -=1
       playTune(treehit)
       updatetext()
       canclick = false
@@ -228,16 +257,35 @@ function clickbuffer()
     canclick = true
   }
 
+//level stuff
+setBackground(grass)
+
+if (level === 2)
+  setBackground(header)
+
 function updatetext()
 {
-  addText("wood: " + wood, {
-    x:0,
-    y:0,
-    color: color`2`
-  })
-  addText("stone: " + rock, {
-     x:0,
-     y:1,
-    color: color`2`
-  })
+  clearText()
+  
+  if (levels === 0){
+    addText("wood: " + wood, {
+      x:0,
+      y:0,
+      color: color`2`
+    })
+    addText("stone: " + rock, {
+       x:0,
+       y:1,
+      color: color`2`
+    })
+  }
+  if (level === 2){
+    clearText()
+    addText("press L to start", {
+      x:0,
+      Y:0,
+      color: color`2`
+    })
+  }
+  
 }
