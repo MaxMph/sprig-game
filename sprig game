@@ -14,9 +14,13 @@ const grass = "g"
 const tree = "t"
 const stone = "s"
 const header = "h"
+const village = "v"
 
 let wood = 0
+let woodbuffer = 400
 let rock = 0
+let rockbuffer = 400
+let people = 0
 let canclick = true
 
 updatetext()
@@ -28,12 +32,12 @@ setLegend(
 ................
 ................
 ................
-.......77.......
-......7777......
-.....777777.....
-.....777777.....
-......7777......
-.......77.......
+.......22.......
+......2..2......
+.....2....2.....
+.....2....2.....
+......2..2......
+.......22.......
 ................
 ................
 ................
@@ -123,7 +127,24 @@ DDDDDDDDDDDDDDDD`],
 0000000000000000
 0000000000000000
 0000000000000000
-0000000000000000`]
+0000000000000000`],
+  [ village, bitmap`
+.......FF.......
+......FCCF......
+.....FCCCCF.....
+....FCCFFCCF....
+...FCCFFFFCCF...
+..FCCFFLLFFCCF..
+..CCFFL11LFFCC..
+..CFFL1111LFFC..
+..FFL111111LFF..
+...F11111111F...
+...F1LL11111F...
+...F1LL11111F...
+...F1LL11111F...
+...F11111111F...
+................
+................`]
 )
 
 //sound effects
@@ -144,7 +165,7 @@ const levels = [
 hhhhh
 ..p..
 .....
-t...s`
+t.v.s`
 ]
 
 setMap(levels[level])
@@ -173,9 +194,6 @@ onInput("d", () => {
   getFirst(player).x += 1
   playTune(move)
 })
-afterInput(() => {
-  
-})
 
 
 afterInput(() => {
@@ -183,14 +201,32 @@ afterInput(() => {
 })
 
 onInput("l", () => {
+  
   let P = getFirst(player);
   let TREE = getFirst(tree);
-  
-  if (P.x == TREE.x && P.y ==TREE.y)
-    wood += 1
-    playTune(treehit)
-    updatetext()
+  let ROCK = getFirst(stone);
+  if (canclick == true){
+    if (P.x == ROCK.x && P.y == ROCK.y){
+      rock += 1
+      playTune(treehit)
+      updatetext()
+      canclick = false
+      setTimeout(clickbuffer, rockbuffer)
+    }
+    if (P.x == TREE.x && P.y == TREE.y){
+      wood += 1
+      playTune(treehit)
+      updatetext()
+      canclick = false
+      setTimeout(clickbuffer, woodbuffer)
+    }
+  }
 })
+
+function clickbuffer()
+  {
+    canclick = true
+  }
 
 function updatetext()
 {
@@ -201,7 +237,7 @@ function updatetext()
   })
   addText("stone: " + rock, {
      x:0,
-     y:2,
+     y:1,
     color: color`2`
   })
 }
