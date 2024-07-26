@@ -14,13 +14,14 @@ const grass = "g"
 const tree = "t"
 const stone = "s"
 const header = "h"
+const bg = "q"
 const village = "v"
 
 let wood = 0
 let woodbuffer = 400
 let rock = 0
 let rockbuffer = 400
-let people = 0
+let people = 1
 let canclick = true
 
 
@@ -124,9 +125,9 @@ DDDDDDDDDDDDDDDD`],
 0000000000000000
 0000000000000000
 0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000`],
+................
+................
+................`],
   [ village, bitmap`
 .......FF.......
 ......FCCF......
@@ -143,7 +144,24 @@ DDDDDDDDDDDDDDDD`],
 ...F1LL11111F...
 ...F11111111F...
 ................
-................`]
+................`],
+  [ bg, bitmap`
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000`]
 )
 
 //sound effects
@@ -151,39 +169,45 @@ const treehit = tune`
 375: E5^375,
 11625`
 const rockhit = tune`
-500: D5~500,
-15500`
+263.1578947368421: A4~263.1578947368421,
+8157.894736842105`
 const move = tune`
 265.4867256637168: F4/265.4867256637168,
 8230.08849557522`
+const start = tune`
+131.57894736842104: B4~131.57894736842104 + E5^131.57894736842104,
+131.57894736842104: C5~131.57894736842104 + F5^131.57894736842104,
+131.57894736842104: D5~131.57894736842104 + G5^131.57894736842104,
+3815.78947368421`
 
 
 
 setSolids([player, header])
 
-let level = 2
+let level = 1
 const levels = [
   map`
 hhhhh
 ..p..
 .....
-t.v.s`,
-  map`
-........
-....b...
-.bbbb...
-........
-........
-........
-........`,
+t.v.s`, //main
   map`
 .......
 .......
 .......
 .......
 .......
-...p...`
-  
+...p...`, //startscreen
+  map`
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........` //info screen
 ]
 
 //setmap()
@@ -229,37 +253,40 @@ onInput("l", () => {
     let HOME = getFirst(village)
     if (canclick == true){
       if (P.x === ROCK.x && P.y === ROCK.y){
-        rock += 1
+        rock += people
         playTune(rockhit)
         updatetext()
         canclick = false
         setTimeout(clickbuffer, rockbuffer)
       }
       if (P.x === TREE.x && P.y === TREE.y){
-        wood += 1
+        wood += people
         playTune(treehit)
         updatetext()
         canclick = false
         setTimeout(clickbuffer, woodbuffer)
       }
-      if (P.x === HOME.x && P.y === HOME.y && wood > 0 && rock > 0){
+      if (P.x === HOME.x && P.y === HOME.y && wood > 9 && rock > 9){
         people += 1
-        wood -= 1
-        rock -=1
+        wood -= 10
+        rock -= 10
         playTune(treehit)
         updatetext()
         canclick = false
-        setTimeout(clickbuffer, woodbuffer)
+        setTimeout(clickbuffer, 40)
       }
     }
   }
-  if (level === 2){
+  if (level === 1){
     level = 0
     setmap()
     updatetext()
     setBackground(grass)
+    playTune(start)
   }
 })
+
+
 
 function clickbuffer()
   {
@@ -274,35 +301,40 @@ function setmap(){
 
 
 
-if (level === 2)
-  setBackground(header)
+if (level === 1)
+  setBackground(bg)
 
 function updatetext()
 {
   clearText()
   
   if (level === 0){
-    addText("wood: " + wood, {
+    addText("wood:" + wood, {
       x:0,
       y:0,
       color: color`2`
     })
-    addText("stone: " + rock, {
+    addText("stone:" + rock, {
       x:0,
       y:1,
       color: color`2`
     })
+    addText("people:" + people, {
+      x:0,
+      y:2,
+      color: color`2`
+    })
   }
-  if (level === 2){
+  if (level === 1){
     clearText()
     addText("press L to start", {
       x:2,
-      y:10,
-      color: color`2`
+      y:8,
+      color: color`1`
     })
     addText("CLICKER KINGDOM", {
       x:2,
-      y:4,
+      y:6,
       color: color`2`
     })
   }
