@@ -199,15 +199,15 @@ t.v.s`, //main
 .......
 ...p...`, //startscreen
   map`
-..........
-..........
-..........
-..........
-..........
-..........
-..........
-..........
-..........` //info screen
+.........hp
+..........h
+...........
+...........
+...........
+...........
+...........
+...........
+...........` //info screen
 ]
 
 //setmap()
@@ -281,12 +281,20 @@ onInput("l", () => {
     level = 0
     setmap()
     updatetext()
-    setBackground(grass)
     playTune(start)
   }
 })
 
-
+onInput("j", () => {
+  if (level === 2)
+    level = 0
+    setmap()
+    updatetext()
+  if (level === 0)
+    level = 2
+    setmap()
+    updatetext()
+})
 
 function clickbuffer()
   {
@@ -297,12 +305,15 @@ function clickbuffer()
 
 function setmap(){
   setMap(levels[level])
+  if (level === 0)
+    setBackground(grass)
+  if (level === 1)
+    setBackground(bg)
+  if (level === 2)
+    setBackground(bg)
 }
 
 
-
-if (level === 1)
-  setBackground(bg)
 
 function updatetext()
 {
@@ -338,5 +349,11 @@ function updatetext()
       color: color`2`
     })
   }
-  
+  if (level === 2){
+    addText("INFO", {
+      x:8,
+      y:1,
+      color: color`2`
+    })
+  }
 }
