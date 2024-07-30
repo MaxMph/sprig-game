@@ -19,8 +19,12 @@ const village = "v"
 
 let wood = 0
 let woodbuffer = 400
+let forestlvl = 1
+let forestcost = (forestlvl * 10)
 let rock = 0
 let rockbuffer = 400
+let minelvl = 1
+let minecost = (minelvl * 10)
 let people = 1
 let canclick = true
 
@@ -286,14 +290,17 @@ onInput("l", () => {
 })
 
 onInput("j", () => {
-  if (level === 2)
-    level = 0
-    setmap()
-    updatetext()
-  if (level === 0)
+  
+  if (level === 0){
     level = 2
     setmap()
     updatetext()
+  }
+  if (level === 2){
+    level = 0
+    setmap()
+    updatetext()
+  }
 })
 
 function clickbuffer()
@@ -353,6 +360,26 @@ function updatetext()
     addText("INFO", {
       x:8,
       y:1,
+      color: color`2`
+    })
+    addText("forest level:" + forestlvl, {
+      x:1,
+      y:3,
+      color: color`2`
+    })
+    addText("upgrade cost:" + forestcost, {
+      x:1,
+      y:4,
+      color: color`2`
+    })
+    addText("mine level:" + minelvl, {
+      x:1,
+      y:6,
+      color: color`2`
+    })
+    addText("upgrade cost:" + minecost, {
+      x:1,
+      y:7,
       color: color`2`
     })
   }
