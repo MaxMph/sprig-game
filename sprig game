@@ -18,11 +18,11 @@ const bg = "q"
 const village = "v"
 
 let wood = 0
-let woodbuffer = 400
+let woodbuffer = 200
 let forestlvl = 1
 let forestcost = (forestlvl * 10)
 let rock = 0
-let rockbuffer = 400
+let rockbuffer = 200
 let minelvl = 1
 let minecost = (minelvl * 10)
 let people = 1
@@ -248,13 +248,15 @@ afterInput(() => {
   
 })
 
+
+
 onInput("l", () => {
   
-  let P = getFirst(player);
   if (level === 0){
-    let TREE = getFirst(tree);
-    let ROCK = getFirst(stone);
-    let HOME = getFirst(village)
+  let P = getFirst(player);
+  let TREE = getFirst(tree);
+  let ROCK = getFirst(stone);
+  let HOME = getFirst(village);
     if (canclick == true){
       if (P.x === ROCK.x && P.y === ROCK.y){
         rock += people
@@ -268,7 +270,7 @@ onInput("l", () => {
         playTune(treehit)
         updatetext()
         canclick = false
-        setTimeout(clickbuffer, woodbuffer)
+        setTimeout(clickbuffer, woodbuffer/(forestlvl * 0.5))
       }
       if (P.x === HOME.x && P.y === HOME.y && wood > 9 && rock > 9){
         people += 1
@@ -286,6 +288,27 @@ onInput("l", () => {
     setmap()
     updatetext()
     playTune(start)
+  }
+})
+
+onInput("i", () => {
+  if (level === 0){
+    let P = getFirst(player);
+    let TREE = getFirst(tree);
+    let ROCK = getFirst(stone);
+    let HOME = getFirst(village);
+    if (P.x === ROCK.x && P.y === ROCK.y && wood > (minecost - 1)){
+      playTune(start)
+      wood -= minecost
+      minelvl += 1
+      updatetext()
+    }
+    if (P.x === TREE.x && P.y === TREE.y && rock > (forestcost - 1)){
+      playTune(start)
+      rock -= forestcost
+      forestlvl += 1
+      updatetext()
+    }
   }
 })
 
