@@ -18,11 +18,11 @@ const bg = "q"
 const village = "v"
 
 let wood = 0
-let woodbuffer = 200
+let woodbuffer = 150
 let forestlvl = 1
 let forestcost = (forestlvl * 10)
 let rock = 0
-let rockbuffer = 200
+let rockbuffer = 150
 let minelvl = 1
 let minecost = (minelvl * 10)
 let people = 1
@@ -219,7 +219,8 @@ t.v.s`, //main
 ...........
 ...........
 ...........
-...........` //info screen
+...........`, //stat screen
+  map`` // info screen
 ]
 
 //setmap()
@@ -271,14 +272,14 @@ onInput("l", () => {
         playTune(rockhit)
         updatetext()
         canclick = false
-        setTimeout(clickbuffer, rockbuffer/(minelvl * 0.5))
+        setTimeout(clickbuffer, rockbuffer/(minelvl * 0.25))
       }
       if (P.x === TREE.x && P.y === TREE.y){
         wood += people
         playTune(treehit)
         updatetext()
         canclick = false
-        setTimeout(clickbuffer, woodbuffer/(forestlvl * 0.5))
+        setTimeout(clickbuffer, woodbuffer/(forestlvl * 0.25))
       }
       if (P.x === HOME.x && P.y === HOME.y && wood > 9 && rock > 9){
         people += 1
@@ -337,6 +338,12 @@ onInput("j", () => {
     }
 })
 
+onInput("k",() => {
+  if (level != 0 && level != 3){
+    level = 3
+  }
+})
+
 function clickbuffer()
   {
     canclick = true
@@ -375,6 +382,16 @@ function updatetext()
       x:0,
       y:2,
       color: color`2`
+    })
+    addText("J: stats", {
+      x:9,
+      y:0,
+      color: color`1`
+    })
+    addText("k: info", {
+      x:9,
+      y:1,
+      color: color`1`
     })
   }
   if (level === 1){
@@ -416,5 +433,8 @@ function updatetext()
       y:7,
       color: color`2`
     })
+  }
+  if (level === 3){
+    addText("info")
   }
 }
