@@ -29,6 +29,14 @@ let people = 1
 let canclick = true
 
 
+function varupdate() 
+{
+  forestcost = (forestlvl * 10)
+  minecost = (minelvl * 10)
+}
+
+varupdate() 
+
 setLegend(
   [ player, bitmap`
 ................
@@ -263,7 +271,7 @@ onInput("l", () => {
         playTune(rockhit)
         updatetext()
         canclick = false
-        setTimeout(clickbuffer, rockbuffer)
+        setTimeout(clickbuffer, rockbuffer/(minelvl * 0.5))
       }
       if (P.x === TREE.x && P.y === TREE.y){
         wood += people
@@ -297,33 +305,36 @@ onInput("i", () => {
     let TREE = getFirst(tree);
     let ROCK = getFirst(stone);
     let HOME = getFirst(village);
+    varupdate() 
     if (P.x === ROCK.x && P.y === ROCK.y && wood > (minecost - 1)){
       playTune(start)
       wood -= minecost
       minelvl += 1
       updatetext()
+      varupdate() 
     }
     if (P.x === TREE.x && P.y === TREE.y && rock > (forestcost - 1)){
       playTune(start)
       rock -= forestcost
       forestlvl += 1
       updatetext()
+      varupdate() 
     }
   }
 })
 
 onInput("j", () => {
-  
-  if (level === 0){
-    level = 2
-    setmap()
-    updatetext()
-  }
-  if (level === 2){
-    level = 0
-    setmap()
-    updatetext()
-  }
+  if (level != 1)
+    if (level === 0){
+      level = 2
+      setmap()
+      updatetext()
+    }
+    else {
+      level = 0
+      setmap()
+      updatetext()
+    }
 })
 
 function clickbuffer()
