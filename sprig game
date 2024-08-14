@@ -291,8 +291,6 @@ afterInput(() => {
   
 })
 
-
-
 onInput("l", () => {
   
   if (level === 0){
@@ -395,12 +393,24 @@ function clickbuffer()
 
 function wincondish()
   {
-    if (people > 999){
+    if (people > 2){
       level = 4
+      playTune(win)
       setmap()
       updatetext()
     }
   }
+
+let starttime = Date.now()
+let time = 0
+setInterval(timeupdate, 1000)
+  
+function timeupdate(){
+  //time += 1
+  let delta = Date.now() - starttime;
+  time = Math.round(delta / 1000)
+  updatetext()
+}
 
 //level stuff
 
@@ -440,13 +450,18 @@ function updatetext()
       color: color`2`
     })
     addText("J: stats", {
-      x:9,
+      x:10,
       y:0,
       color: color`1`
     })
     addText("k: info", {
-      x:9,
+      x:10,
       y:1,
+      color: color`1`
+    })
+    addText("time:" + time, {
+      x:10,
+      y:2,
       color: color`1`
     })
   }
@@ -544,11 +559,11 @@ function updatetext()
   }
   if (level === 4){
     addText("YOU WIN!", {
-      x:0,
-      y:0,
-      color: color`2`
+      x:6,
+      y:6,
+      color: color`4`
     })
-    addText("", {
+    addText("your time:"+ time, {
       x:0,
       y:0,
       color: color`2`
