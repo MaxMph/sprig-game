@@ -220,7 +220,16 @@ t.v.s`, //main
 ...........
 ...........
 ...........`, //stat screen
-  map`` // info screen
+  map`
+...........
+...........
+...........
+...........
+...........
+...........
+...........
+...........
+...........` // info screen
 ]
 
 //setmap()
@@ -338,9 +347,18 @@ onInput("j", () => {
     }
 })
 
-onInput("k",() => {
-  if (level != 0 && level != 3){
-    level = 3
+onInput("k", () => {
+  if (level != 1){
+    if (level === 0){
+      level = 3
+      setmap()
+      updatetext()
+    }
+    else {
+      level = 0
+      setmap()
+      updatetext()
+    }
   }
 })
 
@@ -358,6 +376,8 @@ function setmap(){
   if (level === 1)
     setBackground(bg)
   if (level === 2)
+    setBackground(bg)
+  if (level === 3)
     setBackground(bg)
 }
 
@@ -395,7 +415,7 @@ function updatetext()
     })
   }
   if (level === 1){
-    clearText()
+    
     addText("press L to start", {
       x:2,
       y:8,
@@ -408,7 +428,7 @@ function updatetext()
     })
   }
   if (level === 2){
-    addText("INFO", {
+    addText("STATS", {
       x:8,
       y:1,
       color: color`2`
@@ -435,6 +455,40 @@ function updatetext()
     })
   }
   if (level === 3){
-    addText("info")
+    addText("INFO", {
+      x:8,
+      y:1,
+      color: color`2`
+    })
+    addText("hold L to collect", {
+      x:1,
+      y:3,
+      color: color`2`
+    })
+     addText("resources", {
+      x:1,
+      y:4,
+      color: color`2`
+    })
+    addText("press J to upgrade", {
+      x:1,
+      y:6,
+      color: color`2`
+    })
+    addText("infrastructure", {
+      x:1,
+      y:7,
+      color: color`2`
+    })
+    addText("get a population", {
+      x:1,
+      y:9,
+      color: color`2`
+    })
+    addText("of 1000 to win!", {
+      x:1,
+      y:10,
+      color: color`2`
+    })
   }
 }
