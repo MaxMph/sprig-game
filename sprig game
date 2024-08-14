@@ -16,6 +16,7 @@ const stone = "s"
 const header = "h"
 const bg = "q"
 const village = "v"
+const winbg = "w"
 
 let wood = 0
 let woodbuffer = 150
@@ -173,7 +174,24 @@ DDDDDDDDDDDDDDDD`],
 0000000000000000
 0000000000000000
 0000000000000000
-0000000000000000`]
+0000000000000000`],
+  [ winbg, bitmap`
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222`]
 )
 
 //sound effects
@@ -206,8 +224,40 @@ const win = tune`
 150.7537688442211: C5~150.7537688442211,
 150.7537688442211: A4~150.7537688442211,
 2864.3216080402008`
+const song = tune`
+500: F4~500 + A4~500,
+500: F4~500 + A4~500,
+500: G4~500 + B4~500,
+500: A4~500 + C5~500,
+500: G4~500 + B4~500,
+500: G4~500 + B4~500,
+500: A4~500 + C5~500,
+500: G4~500 + B4~500,
+500: F4~500 + A4~500,
+500: F4~500 + A4~500,
+500: G4~500 + B4~500,
+500: A4~500 + C5~500,
+500: A4~500 + C5~500,
+500: F4~500 + C5~500,
+1000,
+500: F4~500 + A4~500,
+500: F4~500 + A4~500,
+500: G4~500 + B4~500,
+500: G4~500 + B4~500,
+500: A4~500 + C5~500,
+500: A4~500 + C5~500,
+500: A4~500 + C5~500,
+500: G4~500 + B4~500,
+500: F4~500 + A4~500,
+500: F4~500 + A4~500,
+500: G4~500 + B4~500,
+500: G4~500 + B4~500,
+500: A4~500 + C5~500,
+500: G4~500 + B4~500,
+500: F4~500 + A4~500,
+500: E4~500 + G4~500`
 
-
+const playback = playTune(song, Infinity)
 
 setSolids([player, header])
 
@@ -327,6 +377,7 @@ onInput("l", () => {
   }
   if (level === 1){
     level = 0
+    playback.end()
     setmap()
     updatetext()
     playTune(start)
@@ -393,23 +444,31 @@ function clickbuffer()
 
 function wincondish()
   {
-    if (people > 2){
+    if (people > 1){
       level = 4
       playTune(win)
       setmap()
       updatetext()
+      endtime = true
+      setTimeout(winsong, 2500)
     }
   }
+function winsong()
+{
+  playTune(song)
+}
 
 let starttime = Date.now()
 let time = 0
+let endtime = false
 setInterval(timeupdate, 1000)
   
 function timeupdate(){
-  //time += 1
-  let delta = Date.now() - starttime;
-  time = Math.round(delta / 1000)
-  updatetext()
+  if (endtime === false){
+    let delta = Date.now() - starttime;
+    time = Math.round(delta / 1000)
+    updatetext()
+  }
 }
 
 //level stuff
@@ -425,7 +484,7 @@ function setmap(){
   if (level === 3)
     setBackground(bg)
   if (level === 4)
-    setBackground(bg)
+    setBackground(winbg)
 }
 
 
@@ -564,9 +623,9 @@ function updatetext()
       color: color`4`
     })
     addText("your time:"+ time, {
-      x:0,
-      y:0,
-      color: color`2`
+      x:4,
+      y:8,
+      color: color`4`
     })
   }
 }
