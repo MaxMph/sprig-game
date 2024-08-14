@@ -191,6 +191,21 @@ const start = tune`
 131.57894736842104: C5~131.57894736842104 + F5^131.57894736842104,
 131.57894736842104: D5~131.57894736842104 + G5^131.57894736842104,
 3815.78947368421`
+const win = tune`
+150.7537688442211: F4^150.7537688442211 + A4~150.7537688442211,
+150.7537688442211: F4^150.7537688442211 + A4~150.7537688442211,
+150.7537688442211,
+150.7537688442211: G4^150.7537688442211 + C5~150.7537688442211,
+150.7537688442211: A4^150.7537688442211 + D5~150.7537688442211,
+150.7537688442211,
+150.7537688442211: E5~150.7537688442211,
+150.7537688442211,
+150.7537688442211: B4~150.7537688442211,
+150.7537688442211: A4~150.7537688442211,
+150.7537688442211: B4~150.7537688442211,
+150.7537688442211: C5~150.7537688442211,
+150.7537688442211: A4~150.7537688442211,
+2864.3216080402008`
 
 
 
@@ -229,7 +244,17 @@ t.v.s`, //main
 ...........
 ...........
 ...........
-...........` // info screen
+...........`, // info screen
+  map`
+...........
+...........
+...........
+...........
+...........
+...........
+...........
+...........
+...........`, //winscreen
 ]
 
 //setmap()
@@ -295,6 +320,7 @@ onInput("l", () => {
         wood -= 10
         rock -= 10
         playTune(treehit)
+        wincondish()
         updatetext()
         canclick = false
         setTimeout(clickbuffer, 40)
@@ -367,6 +393,15 @@ function clickbuffer()
     canclick = true
   }
 
+function wincondish()
+  {
+    if (people > 999){
+      level = 4
+      setmap()
+      updatetext()
+    }
+  }
+
 //level stuff
 
 function setmap(){
@@ -379,8 +414,9 @@ function setmap(){
     setBackground(bg)
   if (level === 3)
     setBackground(bg)
+  if (level === 4)
+    setBackground(bg)
 }
-
 
 
 function updatetext()
@@ -480,14 +516,41 @@ function updatetext()
       y:7,
       color: color`2`
     })
-    addText("get a population", {
+    addText("get more people to", {
       x:1,
       y:9,
       color: color`2`
     })
-    addText("of 1000 to win!", {
+    addText("gather more", {
       x:1,
       y:10,
+      color: color`2`
+    })
+    addText("resources", {
+      x:1,
+      y:11,
+      color: color`2`
+    })
+     addText("get a population", {
+      x:1,
+      y:13,
+      color: color`2`
+    })
+    addText("of 1000 to win!", {
+      x:1,
+      y:14,
+      color: color`2`
+    })
+  }
+  if (level === 4){
+    addText("YOU WIN!", {
+      x:0,
+      y:0,
+      color: color`2`
+    })
+    addText("", {
+      x:0,
+      y:0,
       color: color`2`
     })
   }
